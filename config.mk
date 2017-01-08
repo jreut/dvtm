@@ -10,7 +10,7 @@ MANPREFIX = ${PREFIX}/share/man
 TERMINFO := ${DESTDIR}${PREFIX}/share/terminfo
 
 INCS = -I.
-LIBS = -lc -lutil -lncurses
+LIBS = -lc -lutil -lncursesw
 CPPFLAGS = -I/usr/local/opt/ncurses/include -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -D_XOPEN_SOURCE_EXTENDED
 CFLAGS += -std=c99 ${INCS} -DVERSION=\"${VERSION}\" -DNDEBUG ${CPPFLAGS} -D_DARWIN_C_SOURCE
 LDFLAGS += -L/usr/local/opt/ncurses/lib ${LIBS}
