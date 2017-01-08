@@ -996,9 +996,16 @@ cleanup(void) {
 static char *getcwd_by_pid(Client *c) {
 	if (!c)
 		return NULL;
-	char buf[32];
-	snprintf(buf, sizeof buf, "/proc/%d/cwd", c->pid);
-	return realpath(buf, NULL);
+	FILE *pipe;
+	char cmd[64], buf[128], *str, *path = NULL;
+	snprintf(cmd, sizeof(cmd), "/usr/sbin/lsof -p %d -ad cwd -Fn", c->pid);
+	if (!(pipe = popen(cmd, "r")))
+		return NULL;
+	while (fgets(buf, sizeof(buf), pipe) && (buf[0] != 'n'));
+	pclose(pipe);
+	str = strdup(buf + 1);
+	path = strsep(&str, "\n");
+	return realpath(path, NULL);
 }
 
 static void
